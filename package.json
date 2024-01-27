@@ -1,0 +1,44 @@
+{
+    "name": "@aiguestdj/roon-extension",
+    "version": "1.0.17",
+    "description": "Roon extension to work with AI Guest DJ",
+    "scripts": {
+        "deploy": "npm run build && npm version patch --no-git-tag-version && npm publish",
+        "docker": "docker build -t aiguestdj/roon-extension --push .",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=10.0.0"
+    },
+    "bin": {
+        "aiguestdj-roon": "./server.js"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.3",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.15.3",
+        "@mui/joy": "^5.0.0-beta.21",
+        "@mui/lab": "^5.0.0-alpha.134",
+        "axios": "^1.4.0",
+        "next": "^13.4.5",
+        "next-compose-plugins": "^2.2.1",
+        "next-connect": "^1.0.0",
+        "node-roon-api-settings": "github:roonlabs/node-roon-api-settings",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "roon-kit": "^0.1.0",
+        "sass": "^1.63.3",
+        "sharp": "^0.33.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.3.0",
+        "@types/react": "^18.2.11",
+        "@types/react-dom": "^18.2.7",
+        "eslint": "8.42.0",
+        "eslint-config-next": "13.4.5"
+    }
+}
