@@ -32,7 +32,7 @@ COPY . .
 ENV NEXT_DOCKER 1
 
 # If using npm comment out above and use below instead
-RUN npm run build
+RUN NEXT_DOCKER=1 npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -60,6 +60,7 @@ USER nextjs
 
 # EXPOSE 9010
 ENV PORT 9010
+
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"
 

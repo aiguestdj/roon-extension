@@ -12,10 +12,15 @@ This is the repository for a [Roon](https://roon.app/) extension to work with [A
 
 ## Docker installation
 
-The easiest way to use this extension is by starting a docker container.
+The easiest way to use this extension is by starting a docker container. Once up and running you will find the instance at http://[ipaddress]:9010. You can change the port number by setting the `PORT` environment variable.
 
 ```sh
-docker run -v [volume or host-folder]:/usr/src/app/config/ -p 9191:9191 aiguestdj/roon-extension:latest
+docker run -d \
+    -e PORT=9010 \
+    --name=aiguestdj-roon \
+    --network=host \
+    --restart on-failure:4 \
+    aiguestdj/roon-extension
 ```
 
 ## Manual installation
@@ -44,10 +49,18 @@ To install it globally on your machine, run the following command.
 npm install @aiguestdj/roon-extension -g
 ```
 
-To start the roon extension run the following command.
+To start the roon extension run the following command. Once up and running you will find the instance at http://[ipaddress]:9010. 
 
 ```sh
 aiguestdj-roon
+```
+
+### Change Port number
+
+You can change the port number by setting the `PORT` environment variable.
+
+```sh
+PORT=9020 aiguestdj-roon
 ```
 
 ## Development

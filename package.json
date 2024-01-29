@@ -1,10 +1,10 @@
 {
     "name": "@aiguestdj/roon-extension",
-    "version": "1.0.17",
+    "version": "1.0.22",
     "description": "Roon extension to work with AI Guest DJ",
     "scripts": {
         "deploy": "npm run build && npm version patch --no-git-tag-version && npm publish",
-        "docker": "docker build -t aiguestdj/roon-extension --push .",
+        "docker": "npm version patch --no-git-tag-version && PACKAGE_VERSION=$(grep '\"version\"' package.json | cut -d '\"' -f 4 | head -n 1) && docker build -t aiguestdj/roon-extension -t aiguestdj/roon-extension:$PACKAGE_VERSION --push .",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
