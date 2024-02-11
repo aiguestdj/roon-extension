@@ -11,7 +11,6 @@ const Page: NextPage = () => {
 
     const [loading, setLoading] = useState<boolean>(true)
     const [zones, setZones] = useState<Zone[]>([])
-    const [settings, setSettings] = useState<string>('')
     const [profile, setProfile] = useState<GetProfileResponse>()
     useEffect(() => {
         const intervalId = setInterval(async () => {
@@ -19,9 +18,6 @@ const Page: NextPage = () => {
                 const result = await axios.get(`/api/zones`);
                 if (result && result.data && result.data.length > 0) {
                     setZones(result.data);
-
-                    const settings = await axios.get(`/api/settings`)
-                    setSettings(settings.data)
                     const profile = await axios.get(`/api/profile`)
                     setProfile(profile.data)
                     setLoading(false);
@@ -31,7 +27,6 @@ const Page: NextPage = () => {
 
             }
         }, 1000)
-
         return () => {
             clearInterval(intervalId);
         }
@@ -74,16 +69,10 @@ const Page: NextPage = () => {
                                                 {zones.map(item => {
                                                     return <Typography key={item.zone_id} level="body-sm">{item.display_name}</Typography>
                                                 })}
-
-                                                <Typography mt={2} level={"h2"}>Settings</Typography>
-                                                <Typography component={"div"} level="body-sm" mt={1} fontFamily={"monospace"} fontSize={"12px"} position={"relative"}>
-                                                    <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{JSON.stringify(settings, undefined, 2)}</pre>
-                                                </Typography>
                                                 <Typography mt={2} level={"h2"}>Profile</Typography>
                                                 <Typography component={"div"} level="body-sm" mt={1} fontFamily={"monospace"} fontSize={"12px"} position={"relative"}>
                                                     <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{JSON.stringify(profile, undefined, 2)}</pre>
                                                 </Typography>
-
                                             </Box>
                                         </Sheet>
                                     </AccordionDetails>

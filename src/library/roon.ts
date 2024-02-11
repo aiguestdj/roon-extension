@@ -29,7 +29,6 @@ if (!_roon) {
         zones: [],
         settings: {}
     }
-
     _roon.extension.start_discovery();
     _roon.extension.set_status("Extension starting");
     _roon.extension.get_core().then((core) => {

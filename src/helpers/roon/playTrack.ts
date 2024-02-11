@@ -3,9 +3,9 @@ import { getBrowseItemKey } from './getBrowseItemKey';
 import { getBrowseResult } from './getBrowseResult';
 import { searchForTrack } from './searchForTrack';
 
-export async function playTrack(core: RoonCore, artist: string, track: string, sessionKey: string, zoneId: string, enqueue: boolean) {
+export async function playTrack(core: RoonCore, artist: string, track: string, songIdx: number, sessionKey: string, zoneId: string, enqueue: boolean) {
     const tracks = await searchForTrack(core, artist, track, sessionKey)
-    const toPlayTrack = tracks[0];
+    const toPlayTrack = tracks[songIdx] ? tracks[songIdx] : tracks[0];
     if (toPlayTrack) {
         const actionListKey = await getBrowseItemKey(core, toPlayTrack.title, { multi_session_key: sessionKey, hierarchy: "search", item_key: toPlayTrack.item_key });
         if (enqueue) {
