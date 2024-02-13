@@ -66,7 +66,7 @@ const Page: NextPage = () => {
 
                 {!loading &&
                     <>
-                        <Button component="a" target="_blank" href={`https://aiguestdj.com?roon=${window.location.href}`}>Connect AI Guest DJ</Button>
+                        <Button component="a" target="_blank" href={`http://aiguestdj.com?roon=${window.location.href}`}>Connect AI Guest DJ</Button>
                         <Box maxWidth={600} margin={"0 auto"} pt={3} textAlign={"left"}>
                             <AccordionGroup variant="outlined">
                                 <Accordion>
