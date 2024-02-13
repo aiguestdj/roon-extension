@@ -12,6 +12,9 @@ const Page: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [zones, setZones] = useState<Zone[]>([])
     const [profile, setProfile] = useState<GetProfileResponse>()
+
+    const [openAiError, setOpenAiError] = useState<boolean>(false);
+    const [openAiProfile, setOpenAiProfile] = useState<{ requests: { prompt: string, tokens: number }[] }>();
     useEffect(() => {
         const intervalId = setInterval(async () => {
             try {
@@ -20,6 +23,12 @@ const Page: NextPage = () => {
                     setZones(result.data);
                     const profile = await axios.get(`/api/profile`)
                     setProfile(profile.data)
+                    try {
+                        const openAIProfile = await axios.get(`/api/openai/profile`)
+                        setOpenAiProfile(openAIProfile.data)
+                    } catch (e) {
+                        setOpenAiError(true)
+                    }
                     setLoading(false);
                     clearInterval(intervalId)
                 }
@@ -58,7 +67,7 @@ const Page: NextPage = () => {
                 {!loading &&
                     <>
                         <Button component="a" target="_blank" href={`https://aiguestdj.com?roon=${window.location.href}`}>Connect AI Guest DJ</Button>
-                        <Box maxWidth={500} margin={"0 auto"} pt={3} textAlign={"left"}>
+                        <Box maxWidth={600} margin={"0 auto"} pt={3} textAlign={"left"}>
                             <AccordionGroup variant="outlined">
                                 <Accordion>
                                     <AccordionSummary>Roon connection details</AccordionSummary>
@@ -81,7 +90,29 @@ const Page: NextPage = () => {
                         </Box>
                     </>
                 }
-
+                {openAiError &&
+                    <Box maxWidth={600} margin={"0 auto"} mt={2}>
+                        <Alert color="danger" size="sm" variant="outlined">Open AI is not connected. Please update your API key and try again.</Alert>
+                    </Box>
+                }
+                {!openAiError && openAiProfile &&
+                    <Box maxWidth={600} margin={"0 auto"} pt={3} textAlign={"left"}>
+                        <AccordionGroup variant="outlined">
+                            <Accordion>
+                                <AccordionSummary>Open AI History</AccordionSummary>
+                                <AccordionDetails>
+                                    <Sheet color="neutral" variant="soft">
+                                        <Box p={1}>
+                                            <Typography component={"div"} level="body-sm" mt={1} fontFamily={"monospace"} fontSize={"12px"} position={"relative"}>
+                                                <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{JSON.stringify(openAiProfile, undefined, 2)}</pre>
+                                            </Typography>
+                                        </Box>
+                                    </Sheet>
+                                </AccordionDetails>
+                            </Accordion>
+                        </AccordionGroup>
+                    </Box>
+                }
 
             </Box>
         </Sheet>

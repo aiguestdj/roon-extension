@@ -17,6 +17,9 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
         })
 
 export default router.handler({
+    onNoMatch: (req, res) => {
+        res.status(200).json({})
+    },
     onError: (err: any, req, res) => {
         generateError(req, res, "Roon zones", err);
     },

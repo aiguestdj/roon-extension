@@ -50,6 +50,8 @@ COPY --from=builder /app/public ./public
 # Set the correct permission for prerender cache
 RUN mkdir dist
 RUN chown nextjs:nodejs dist
+RUN mkdir config
+RUN chown nextjs:nodejs config
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
@@ -60,6 +62,7 @@ USER nextjs
 
 # EXPOSE 9010
 ENV PORT 9010
+ENV OPENAI_KEY OPENAI_KEY
 
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"

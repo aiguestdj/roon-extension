@@ -1,3 +1,4 @@
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { RoonExtension, Zone } from 'roon-kit';
 declare global {
     var _roon: {
@@ -7,8 +8,22 @@ declare global {
     }
 }
 
+const storeConfiguration = () => {
+    if (existsSync('config.json')) {
+
+        if (!existsSync('config'))
+            mkdirSync('config')
+
+        copyFileSync('config.json', 'config/roon.json')
+    }
+}
 let _roon = global._roon;
 if (!_roon) {
+
+
+    if (existsSync('config/roon.json') && !existsSync('config.json'))
+        copyFileSync('config/roon.json', 'config.json');
+
     _roon = {
         extension: new RoonExtension({
             description: {
@@ -33,8 +48,13 @@ if (!_roon) {
     _roon.extension.set_status("Extension starting");
     _roon.extension.get_core().then((core) => {
         roon.extension.set_status(`Core paired`);
+        // Store configuration file
+        storeConfiguration();
     });
     _roon.extension.on("subscribe_zones", (core, response, body) => {
+        // Store configuration file
+        storeConfiguration();
+
         if (!!body && body.zones) {
             _roon.zones = body.zones
         } else if (body && body.zones_added) {
@@ -54,7 +74,6 @@ if (!_roon) {
                 let existingZone = _roon.zones.filter(item => item.zone_id == zone.zone_id)[0];
                 if (existingZone)
                     _roon.zones.splice(_roon.zones.indexOf(existingZone), 1, zone)
-
             })
         }
     })

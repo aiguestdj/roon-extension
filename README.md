@@ -14,13 +14,42 @@ This is the repository for a [Roon](https://roon.app/) extension to work with [A
 
 The easiest way to use this extension is by starting a docker container. Once up and running you will find the instance at http://[ipaddress]:9010. You can change the port number by setting the `PORT` environment variable.
 
+### Open AI API key
+
+Your Open AI API key is stored as an environment variable of the docker instance. You can find your API keys in your [User settings of Open AI](https://platform.openai.com/api-keys). If you don't have an API key you can remove this line.
+
+### Binding volume
+
+Binding a volume to the `/app/config` folder enables persistant storage of the configuration files. Currently the configuration is used to monitor the last requests made to Open AI. If you don't want to use persistant storage you can remove this line.
+
 ```sh
 docker run -d \
     -e PORT=9010 \
+    -e OPENAI_KEY=PASTE_YOUR_OPEN_AI_API_KEY_HERE \
+    -v /local/directory/:/app/config:rw \
     --name=aiguestdj-roon \
     --network=host \
     --restart on-failure:4 \
     aiguestdj/roon-extension
+```
+
+## Portainer installation
+
+Create a new stack with the following configuration when using portainer.
+
+```yaml
+version: '3.3'
+services:
+    aiguestdj-roon:
+        container_name: aiguestdj-roon
+        restart: unless-stopped
+        volumes:
+            - '/local/directory:/app/config'
+        environment:
+            - PORT=9010
+            - OPENAI_KEY=PASTE_YOUR_OPEN_AI_API_KEY_HERE
+        network_mode: "host"
+        image: 'aiguestdj/roon-extension:latest'
 ```
 
 ## Manual installation
