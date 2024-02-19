@@ -84,6 +84,14 @@ To start the roon extension run the following command. Once up and running you w
 aiguestdj-roon
 ```
 
+### Add OpenAI Key
+
+You can add your OpenAI API Key by setting the `OPENAI_KEY` environment variable.
+
+```sh
+OPENAI_KEY=PASTE_YOUR_OPEN_AI_API_KEY_HERE aiguestdj-roon
+```
+
 ### Change Port number
 
 You can change the port number by setting the `PORT` environment variable.
