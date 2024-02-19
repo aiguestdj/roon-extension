@@ -91,7 +91,3 @@ You can change the port number by setting the `PORT` environment variable.
 ```sh
 PORT=9020 aiguestdj-roon
 ```
-
-## Development
-
-The extension is build using NextJS. So you can also checkout this repo and simply use the next commands like `npm run dev`, `npm run build` and `npm run start`.
