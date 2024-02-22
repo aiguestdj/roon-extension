@@ -18,6 +18,8 @@ The easiest way to use this extension is by starting a docker container. Once up
 
 Your Open AI API key is stored as an environment variable of the docker instance. You can find your API keys in your [User settings of Open AI](https://platform.openai.com/api-keys). If you don't have an API key you can remove this line.
 
+To use your own Open AI API key you will need to setup your billing account in Open AI. It is not sufficient to only have a ChatGPT Plus account.
+
 ### Binding volume
 
 Binding a volume to the `/app/config` folder enables persistant storage of the configuration files. Currently the configuration is used to monitor the last requests made to Open AI. If you don't want to use persistant storage you can remove this line.
