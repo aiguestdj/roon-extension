@@ -1,5 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync } from 'fs';
 import { RoonExtension, Zone } from 'roon-kit';
+const package_json = require('../../package.json');
+
 declare global {
     var _roon: {
         extension: RoonExtension,
@@ -16,6 +18,7 @@ const storeConfiguration = () => {
         copyFileSync('config.json', 'config/roon.json')
     }
 }
+
 let _roon = global._roon;
 if (!_roon) {
     if (existsSync('config/roon.json') && !existsSync('config.json'))
@@ -26,7 +29,7 @@ if (!_roon) {
             description: {
                 extension_id: 'roon-aiguestdj',
                 display_name: "AI Guest DJ",
-                display_version: "1.0.0",
+                display_version: package_json.version,
                 publisher: 'Jaap den Hertog',
                 email: 'jjdenhertog@gmail.com',
                 website: 'https://aiguestdj.com'
@@ -45,7 +48,6 @@ if (!_roon) {
     _roon.extension.set_status("Extension starting");
     _roon.extension.get_core().then((core) => {
         roon.extension.set_status(`Core paired`);
-        // Store configuration file
         storeConfiguration();
     });
     _roon.extension.on("subscribe_zones", (core, response, body) => {

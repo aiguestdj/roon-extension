@@ -7,6 +7,7 @@ const nextConfig = {
     distDir: "dist",
     reactStrictMode: false,
     productionBrowserSourceMaps: true,
+    experimental: { instrumentationHook: true },
     webpack: (config) => {
         config.resolve.fallback = { fs: false };
         return config;
