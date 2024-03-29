@@ -14,14 +14,14 @@ This is the repository for a [Roon](https://roon.app/) extension to work with [A
 
 The fastest and easiest way to install this extension is using the [Roon Extension Manager](https://github.com/TheAppgineer/roon-extension-manager). Here you can insttall the extension, during the installation you will need to input three environment variables:
 
-*HOSTNAME*
+**HOSTNAME**
 > This should be the ip address where you have installed the extension manager (e.g. 192.168.50.120)
 
-*PORT*
-This is the portnumber you want to use to access the AI Guest DJ extension (default: 9010)
+**PORT**
+> This is the portnumber you want to use to access the AI Guest DJ extension (default: 9010)
 
-*OPEN_AI_KEY*
-This is in optional environment variable that allows you to connect with your own Open AI API Key
+**OPEN_AI_KEY**
+> This is in optional environment variable that allows you to connect with your own Open AI API Key
 
 ## Docker installation
 
