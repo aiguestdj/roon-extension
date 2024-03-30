@@ -57,7 +57,8 @@
         "**/*.tsx",
         "lib/utils/cache.js",
         ".next/types/**/*.ts",
-        "dist/types/**/*.ts"
+        "dist/types/**/*.ts",
+        "src/instrumentation.js"
     ],
     "exclude": [
         "node_modules"

@@ -24,6 +24,7 @@ if (!_roon) {
     if (existsSync('config/roon.json') && !existsSync('config.json'))
         copyFileSync('config/roon.json', 'config.json');
 
+    const ip = get_ip();
     _roon = {
         extension: new RoonExtension({
             description: {
@@ -32,7 +33,7 @@ if (!_roon) {
                 display_version: package_json.version,
                 publisher: 'Jaap den Hertog',
                 email: 'jjdenhertog@gmail.com',
-                website: 'https://aiguestdj.com'
+                website: ip ? `http://${ip}:${process.env.PORT}` : 'https://aiguestdj.com'
             },
             RoonApiBrowse: 'required',
             RoonApiImage: 'required',
@@ -45,9 +46,10 @@ if (!_roon) {
         settings: {}
     }
     _roon.extension.start_discovery();
+
     _roon.extension.set_status("Extension starting");
     _roon.extension.get_core().then((core) => {
-        roon.extension.set_status(`Core paired`);
+        _roon.extension.set_status(`Core paired`);
         storeConfiguration();
     });
     _roon.extension.on("subscribe_zones", (core, response, body) => {
@@ -78,5 +80,21 @@ if (!_roon) {
     })
 }
 
+function get_ip() {
+    const os = require('os');
+    const ifaces = os.networkInterfaces();
+
+    for (const ifname in ifaces) {
+        const iface = ifaces[ifname];
+
+        for (let i = 0; i < iface.length; i++) {
+            if (iface[i].family == 'IPv4' && !iface[i].internal) {
+                return iface[i].address;
+            }
+        }
+    }
+
+    return undefined;
+}
 export const roon = _roon;
-if (process.env.NODE_ENV !== 'production') global._roon = _roon
+global._roon = _roon

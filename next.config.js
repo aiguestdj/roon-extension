@@ -1,14 +1,13 @@
-const withPlugins = require('next-compose-plugins')
-const withBundleAnalyzer = require('@next/bundle-analyzer')
-const bundleAnalyzer = withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
 
 const nextConfig = {
     output: process.env.NEXT_DOCKER ? "standalone" : undefined,
     distDir: "dist",
     reactStrictMode: false,
-    productionBrowserSourceMaps: true,
-    experimental: { instrumentationHook: true },
+    experimental: {
+        instrumentationHook: true,
+    },
     webpack: (config) => {
+        config.optimization.minimize = false;
         config.resolve.fallback = { fs: false };
         return config;
     },
@@ -26,4 +25,4 @@ const nextConfig = {
         ]
     }
 }
-module.exports = withPlugins([[bundleAnalyzer]], nextConfig)
+module.exports = nextConfig
