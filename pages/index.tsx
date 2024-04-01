@@ -71,7 +71,6 @@ const Page: NextPage = () => {
                     <>
                         <CircularProgress size="sm" />
                         <Box display={'flex'} justifyContent={'center'}>
-
                             <Alert variant="outlined">Go to your Roon App and visit Settings &gt; Extensions <br />and enable the AI Guest DJ extension.</Alert>
                         </Box>
                     </>

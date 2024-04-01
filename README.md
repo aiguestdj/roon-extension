@@ -42,7 +42,7 @@ docker run -d \
     --name=aiguestdj-roon \
     --network=host \
     --restart on-failure:4 \
-    aiguestdj/roon-extension
+    aiguestdj/roon-extension-aiguestdj
 ```
 
 ## Portainer installation
@@ -61,7 +61,7 @@ services:
             - PORT=9010
             - OPENAI_KEY=PASTE_YOUR_OPEN_AI_API_KEY_HERE
         network_mode: "host"
-        image: 'aiguestdj/roon-extension:latest'
+        image: 'aiguestdj/roon-extension-aiguestdj:latest'
 ```
 
 ## Manual installation
