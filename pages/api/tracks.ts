@@ -30,7 +30,10 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
                 return res.status(400).json({ msg: "No items given" });
 
             const core = await roon.extension.get_core()
-            const promises: Promise<GetTrackReponse>[] = []
+            let promises: Promise<GetTrackReponse>[] = []
+            let result: PromiseSettledResult<Awaited<GetTrackReponse>>[] = []
+            let request_cap = 10
+
             for (let i = 0; i < items.length && !res.destroyed; i++) {
                 const { artist, name, spotify_artist, spotify_name } = items[i];
                 const promise = new Promise<GetTrackReponse>(async (resolve, reject) => {
@@ -49,11 +52,19 @@ const router = createRouter<NextApiRequest, NextApiResponse>()
                     }
                 })
                 promises.push(promise)
+                if (promises.length == request_cap) {
+                    result = result.concat(await Promise.allSettled(promises));
+                    promises = [];
+                }
             }
 
             //@ts-ignore
-            const result = (await Promise.allSettled(promises)).filter(item => item.status == "fulfilled").map(item => item.value)
-            res.status(200).json(result);
+            if (promises.length > 0)
+                result = result.concat(await Promise.allSettled(promises));
+
+
+            // const result = (await Promise.allSettled(promises)).filter(item => item.status == "fulfilled").map(item => item.value)
+            res.status(200).json(result.filter(item => item.status == "fulfilled").map(item => item.status == "fulfilled" ? item.value : null));
         })
 
 

@@ -72,11 +72,11 @@ const Page: NextPage = () => {
         }))
     }
 
-    return (<MainLayout>
+    return (<MainLayout type="roon" loading={loading}>
         <Head>
             <title>AI Guest DJ | Designed for Roon</title>
         </Head>
-        <Sheet sx={{ p: 1, md: { p: 3 }, mt: 10 }}>
+        <Sheet sx={{ p: 1, md: { p: 3 }, mt: 5 }}>
             <Box maxWidth={650} margin={"0 auto"}>
                 {playlist && <Box mt={1}>
                     <Box textAlign={"center"}>

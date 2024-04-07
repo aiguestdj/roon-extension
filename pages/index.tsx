@@ -1,15 +1,11 @@
-import { errorBoundary } from "@aiguestdj/shared";
-import OpenAISettingsDialog from "@aiguestdj/shared/components/OpenAISettingsDialog";
 import MainLayout from "@aiguestdj/shared/layouts/MainLayout";
-import { EditOutlined } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, Alert, Box, Button, CircularProgress, Divider, IconButton, Sheet, Typography } from "@mui/joy";
+import { Accordion, AccordionDetails, AccordionGroup, AccordionSummary, Alert, Box, Button, CircularProgress, Divider, Sheet, Typography } from "@mui/joy";
 import axios from "axios";
 import { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Zone } from 'roon-kit';
-import { GetOpenAIProfileResponse } from "./api/openai/profile";
 import { GetProfileResponse } from "./api/profile";
 
 const Page: NextPage = () => {
@@ -18,9 +14,6 @@ const Page: NextPage = () => {
     const [zones, setZones] = useState<Zone[]>([])
     const [profile, setProfile] = useState<GetProfileResponse>()
 
-    const [openAiError, setOpenAiError] = useState<boolean>(false);
-    const [openAiProfile, setOpenAiProfile] = useState<GetOpenAIProfileResponse>();
-    const [showOpenAiConfig, setShowOpenAiConfig] = useState<boolean>(false)
     // Roon
     useEffect(() => {
         let timeoutId: number = NaN;
@@ -45,16 +38,7 @@ const Page: NextPage = () => {
         }
     }, [])
 
-    // Open AI
-    useEffect(() => {
-        errorBoundary(async () => {
-            const openAIProfile = await axios.get(`/api/openai/profile`)
-            setOpenAiProfile(openAIProfile.data)
-        }, () => {
-            setOpenAiError(true)
-        }, true)
-    }, [])
-    return (<MainLayout>
+    return (<MainLayout type="roon">
         <Head>
             <title>AI Guest DJ | Designed for Roon</title>
         </Head>
@@ -104,42 +88,9 @@ const Page: NextPage = () => {
                         </Box>
                     </>
                 }
-                {openAiError &&
-                    <Box maxWidth={600} margin={"0 auto"} mt={2}>
-                        <Alert color="danger" size="sm" variant="outlined">Open AI is not connected. Please update your API key and try again.</Alert>
-                    </Box>
-                }
-                {!openAiError && openAiProfile &&
-                    <Box maxWidth={600} margin={"0 auto"} mt={6} textAlign={"left"}>
-                        <Divider sx={{ mb: 2 }} />
-                        <Typography level="h1">Open AI API</Typography>
-                        <Box display={'flex'} mb={2} mt={1} gap={1}>
-                            <Button component={"a"} color="neutral" href={`/generate`} startDecorator={<Image src={"/img/icon-openai.svg"} alt="Open AI logo" width={20} height={20} />}>Create playlist via OpenAI</Button>
-                            <IconButton variant="solid" color="warning" size="sm" onClick={() => setShowOpenAiConfig(true)}><EditOutlined fontSize="small" /></IconButton>
-                        </Box>
-                        <AccordionGroup variant="outlined">
-                            <Accordion>
-                                <AccordionSummary>History</AccordionSummary>
-                                <AccordionDetails>
-                                    <Sheet color="neutral" variant="soft">
-                                        <Box p={1}>
-                                            <Typography component={"div"} level="body-sm" mt={1} fontFamily={"monospace"} fontSize={"12px"} position={"relative"}>
-                                                <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{JSON.stringify(openAiProfile.requests.reverse().slice(0, 10), undefined, 2)}</pre>
-                                            </Typography>
-                                        </Box>
-                                    </Sheet>
-                                </AccordionDetails>
-                            </Accordion>
-                        </AccordionGroup>
-                    </Box>
-                }
-
             </Box>
         </Sheet>
 
-        {showOpenAiConfig &&
-            <OpenAISettingsDialog onClose={() => setShowOpenAiConfig(false)} />
-        }
     </MainLayout>
     )
 }
